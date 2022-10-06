@@ -49,8 +49,8 @@ elif [ "$INPUT_UPDATE" != "false" ]; then
     flyctl secrets set --app "$app" $INPUT_SECRETS || true
   fi
   flyctl deploy --app "$app" --config "$config" --region "$region" --image "$image" --region "$region" --strategy immediate
-  if [ -n $vm_size ] && [-n $vm_memory ]; then
-    flyctl scale vm $vm_size --memory $vm_memory --app "$app" || true
+  if [ -n "$vm_size" ] && [ -n "$vm_memory" ]; then
+    flyctl scale vm "$vm_size" --memory "$vm_memory" --app "$app" || true
   fi
 fi
 
