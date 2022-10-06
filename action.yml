@@ -35,6 +35,9 @@ inputs:
   secrets:
     required: false
     description: Secrets to be set on the app. Separate multiple secrets with a space, i.e., FIRST_SECRET=... SECOND_SECRET=...
-  vm:
+  vm_size:
     required: false
-    description: Set VM size, see https://fly.io/docs/reference/scaling/
+    description: Set VM size, must be set with vm_memory
+  vm_memory:
+    required: false
+    description: Set VM memory, must be set with vm_size
