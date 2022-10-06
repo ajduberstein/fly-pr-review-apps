@@ -23,8 +23,6 @@ region="${INPUT_REGION:-${FLY_REGION:-iad}}"
 org="${INPUT_ORG:-${FLY_ORG:-personal}}"
 image="$INPUT_IMAGE"
 config="$INPUT_CONFIG"
-vm_size="$INPUT_VM_SIZE"
-vm_memory="$INPUT_VM_MEMORY"
 
 if ! echo "$app" | grep "$PR_NUMBER"; then
   echo "For safety, this action requires the app's name to contain the PR number."
@@ -49,9 +47,6 @@ elif [ "$INPUT_UPDATE" != "false" ]; then
     flyctl secrets set --app "$app" $INPUT_SECRETS || true
   fi
   flyctl deploy --app "$app" --config "$config" --region "$region" --image "$image" --region "$region" --strategy immediate
-  if [ -n "$vm_size" ] && [ -n "$vm_memory" ]; then
-    flyctl scale vm "$vm_size" --memory "$vm_memory" --app "$app" || true
-  fi
 fi
 
 # Attach postgres cluster to the app if specified.
