@@ -23,6 +23,8 @@ inputs:
   path:
     required: false
     description: path to a directory containing a fly.toml to clone
+  config:
+    description: Optional path to a custom Fly toml config. Config path should be relative to `path` parameter, if specified.
   postgres:
     required: false
     description: Optionally attach the app to a pre-existing Postgres cluster on Fly
