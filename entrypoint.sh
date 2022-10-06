@@ -16,6 +16,12 @@ fi
 REPO_OWNER=$(jq -r .event.base.repo.owner /github/workflow/event.json)
 REPO_NAME=$(jq -r .event.base.repo.name /github/workflow/event.json)
 EVENT_TYPE=$(jq -r .action /github/workflow/event.json)
+USER_NAME=$(jq -r .sender.login /github/workflow/event.json)
+
+if [ -z "$USER_NAME" ]; then
+  echo "Action requires a login."
+  exit 1
+fi
 
 # Default the Fly app name to pr-{number}-{repo_owner}-{repo_name}
 app="${INPUT_NAME:-pr-$PR_NUMBER-$REPO_OWNER-$REPO_NAME}"
@@ -23,11 +29,6 @@ region="${INPUT_REGION:-${FLY_REGION:-iad}}"
 org="${INPUT_ORG:-${FLY_ORG:-personal}}"
 image="$INPUT_IMAGE"
 config="$INPUT_CONFIG"
-
-if ! echo "$app" | grep "$PR_NUMBER"; then
-  echo "For safety, this action requires the app's name to contain the PR number."
-  exit 1
-fi
 
 # PR was closed - remove the Fly app if one exists and exit.
 if [ "$EVENT_TYPE" = "closed" ]; then
